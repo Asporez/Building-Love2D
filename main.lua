@@ -72,7 +72,7 @@ end
 
 function love.draw()
     if isMenu() then
-        buttons.menu_state.startButton:draw(love.graphics.getWidth() / 2 - 65, love.graphics.getHeight() / 2 - 25)
+        buttons.menu_state.startButton:draw(love.graphics.getWidth() / 2 - 65, love.graphics.getHeight() / 2 - 25, 35, 10)
     elseif isRunning() then
         print("Running", 0, 0)
     end

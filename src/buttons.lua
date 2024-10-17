@@ -5,6 +5,9 @@ functionality of those buttons from the main file.
 --]]
 -- text string, function, optional parameters, position X, position Y, text position X, text position Y
 function Button( text, func, func_param, width, height )
+    local buttonImage = love.graphics.newImage( 'sprites/flatBar7.png' )
+    width = buttonImage:getWidth()
+    height = buttonImage:getHeight()
     return {
         width = width or 100,
         height = height or 100,
@@ -44,8 +47,7 @@ function Button( text, func, func_param, width, height )
                 self.text_y = self.button_y
             end
 
-            love.graphics.setColor( 0.6, 0.6, 0.6 )
-            love.graphics.rectangle( "fill", self.button_x, self.button_y, self.width, self.height )
+            love.graphics.draw( buttonImage, self.button_x, self.button_y )
 
             love.graphics.setColor( 0, 0, 0 )
             love.graphics.print( self.text, self.text_x, self.text_y )
