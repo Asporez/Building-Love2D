@@ -1,37 +1,39 @@
-local love = require "love"
---[[
-Standalone factory pattern table that produces buttons as well as determine
-functionality of those buttons from the main file.
---]]
--- text string, function, optional parameters, position X, position Y, text position X, text position Y
-function Button( text, func, func_param, width, height )
-    local buttonImage = love.graphics.newImage( 'sprites/flatBar7.png' )
-    width = buttonImage:getWidth()
-    height = buttonImage:getHeight()
+local love = require('love')
+
+-- Button factory
+function Button(text, func, func_param, spritePath, width, height)
+    local buttonImage = love.graphics.newImage(spritePath)
+    
+    -- Use provided width and height if available, otherwise fall back to image dimensions
+    width = width or buttonImage:getWidth()
+    height = height or buttonImage:getHeight()
+
     return {
-        width = width or 100,
-        height = height or 100,
-        func = func or function() print( "This button has no functions attached" ) end,
+        width = width,
+        height = height,
+        func = func or function() print("This button has no functions attached") end,
         func_param = func_param,
         text = text or "No Text",
         button_x = 0,
         button_y = 0,
         text_x = 0,
         text_y = 0,
--- Execute the button that is clicked on
-        checkPressed = function ( self, mouse_x, mouse_y, cursor_radius )
-            if ( mouse_x + cursor_radius >= self.button_x ) and ( mouse_x - cursor_radius <= self.button_x + self.width ) then
-                if ( mouse_y + cursor_radius >= self.button_y ) and ( mouse_y - cursor_radius <= self.button_y + self.height ) then
+
+        -- Check if the button was pressed
+        checkPressed = function (self, mouse_x, mouse_y, cursor_radius)
+            if (mouse_x + cursor_radius >= self.button_x) and (mouse_x - cursor_radius <= self.button_x + self.width) then
+                if (mouse_y + cursor_radius >= self.button_y) and (mouse_y - cursor_radius <= self.button_y + self.height) then
                     if self.func_param then
-                        self.func( self.func_param )
+                        self.func(self.func_param)
                     else
                         self.func()
                     end
                 end    
             end
         end,
--- Determines the appearance of the buttons to be instantiated.
-        draw = function ( self, button_x, button_y, text_x, text_y )
+
+        -- Draw the button and text
+        draw = function (self, button_x, button_y, text_x, text_y)
             self.button_x = button_x or self.button_x
             self.button_y = button_y or self.button_y
 
@@ -47,14 +49,30 @@ function Button( text, func, func_param, width, height )
                 self.text_y = self.button_y
             end
 
-            love.graphics.draw( buttonImage, self.button_x, self.button_y )
+            -- Draw the button image
+            love.graphics.draw(buttonImage, self.button_x, self.button_y)
 
-            love.graphics.setColor( 0, 0, 0 )
-            love.graphics.print( self.text, self.text_x, self.text_y )
+            -- Draw the button text
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.print(self.text, self.text_x, self.text_y)
 
-            love.graphics.setColor( 1, 1, 1 )
+            -- Reset color
+            love.graphics.setColor(1, 1, 1)
         end
     }
 end
 
-return Button
+-- Table to hold button creation functions
+local buttons = {}
+
+-- Function to create menu buttons
+function buttons.createMenuButtons(enableRunning, enableMenu)
+    local menuButtons = {}
+
+-- Create a "Play" button
+    menuButtons.startButton = Button("Play", enableRunning, nil, 'sprites/smallGreenButton.png', 96, 36)
+
+    return menuButtons
+end
+
+return buttons

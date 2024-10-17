@@ -18,7 +18,7 @@ local program = {
 }
 
 -- Table to store buttons depending on program state
-local buttons = {
+local stateButtons = {
     menu_state = {}
 }
 
@@ -43,15 +43,16 @@ local function isRunning()
 end
 
 function love.load()
-    buttons.menu_state.startButton = button("Play", enableRunning, nil, 110, 40)
+    -- Load buttons for the menu state
+    stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
 end
 
--- Love2D core input function with button passed as parameter.
-function love.mousepressed(x, y, button, istouch, presses)
+-- Love2D core input function with button passed as parameter
+function love.mousepressed(x, y, mouse_button, istouch, presses)
     if not isRunning() then
-        if button == 1 then
+        if mouse_button == 1 then
             if isMenu() then
-                for _, btn in pairs(buttons.menu_state) do
+                for _, btn in pairs(stateButtons.menu_state) do
                     btn:checkPressed(x, y, cursor.radius)
                 end
             end
@@ -68,12 +69,13 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
+    
 end
 
 function love.draw()
     if isMenu() then
-        buttons.menu_state.startButton:draw(love.graphics.getWidth() / 2 - 65, love.graphics.getHeight() / 2 - 25, 35, 10)
+        stateButtons.menu_state.startButton:draw(love.graphics.getWidth() / 2 - 65, love.graphics.getHeight() / 2 - 25, 35, 10)
     elseif isRunning() then
-        print("Running", 0, 0)
+        print("Running")
     end
 end
