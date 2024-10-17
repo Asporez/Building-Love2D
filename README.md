@@ -1,7 +1,3 @@
-# ES23
-
- Yet another prototype!
-
 # **Building Löve**
 
 ## Step by step journal of a software developer.
