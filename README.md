@@ -205,3 +205,106 @@ function love.draw()
 end
 ```
 TODO: EXPLAIN HERE
+
+- Refactor buttons.lua to load sprites. REFACTORING means you have to change the code, usually id have to show what parts to remove and what not to but im lazy and this is my journal.
+```lua
+-- Button factory
+function Button(text, func, func_param, spritePath, width, height)
+    local buttonImage = love.graphics.newImage(spritePath)
+    
+    -- Use provided width and height if available, otherwise fall back to image dimensions
+    width = width or buttonImage:getWidth()
+    height = height or buttonImage:getHeight()
+
+    return {
+        width = width,
+
+        (...)
+
+-- Table to hold button creation functions
+local buttons = {}
+
+-- Function to create menu buttons
+function buttons.createMenuButtons(enableRunning, enableMenu)
+    local menuButtons = {}
+
+-- Create a "Play" button
+    menuButtons.startButton = Button("Play", enableRunning, nil, 'sprites/smallGreenButton.png', 96, 36)
+
+    return menuButtons
+end
+
+return buttons
+```
+in main.lua
+```lua
+-- Table to store buttons depending on program state
+local stateButtons = {
+    menu_state = {}
+}
+(...)
+
+function love.load()
+    -- Load buttons for the menu state
+    stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
+end
+
+-- Love2D core input function with button passed as parameter
+function love.mousepressed(x, y, mouse_button, istouch, presses)
+    if not isRunning() then
+        if mouse_button == 1 then
+            if isMenu() then
+                for _, btn in pairs(stateButtons.menu_state) do
+                    btn:checkPressed(x, y, cursor.radius)
+                end
+            end
+        end
+    end
+end
+
+(...)
+
+function love.draw()
+    if isMenu() then
+        stateButtons.menu_state.startButton:draw(love.graphics.getWidth() / 2 - 65, love.graphics.getHeight() / 2 - 25, 35, 10)
+    elseif isRunning() then
+        print("Running")
+    end
+end
+```
+Boom, just like that, we add spritePath to the list of parameters then we store the Love2D built-in sprite renderer function in buttonImage which becomes the object, we define that object by assigning the path that love.graphics.newImage() needs and it loads the sprite.
+TODO: EXPLAIN MORE
+
+- Add exit button
+```lua
+-- Table to hold button creation functions
+local buttons = {}
+
+-- Function to create menu buttons
+function buttons.createMenuButtons(enableRunning, enableMenu)
+    local menuButtons = {}
+
+    menuButtons.startButton = Button("Play", enableRunning, nil, 'sprites/smallGreenButton.png', 96, 36)
+    menuButtons.exitButton = Button("Exit", love.event.quit, nil, 'sprites/smallGreenButton.png', 96, 36)
+
+    return menuButtons
+end
+
+return buttons
+```
+Now because it's a good habit to form early in a project, before drawing I stored the math to place the buttons in their own values this way the program doesnt need to check the size of the screen each time a button is drawn.
+main.lua
+```lua
+function love.draw()
+    if isMenu() then
+        local menuPositionX = love.graphics.getWidth() / 2 - 65
+        local menuPositionY = love.graphics.getHeight() / 2 - 25
+        stateButtons.menu_state.startButton:draw(menuPositionX, menuPositionY, 35, 10)
+        stateButtons.menu_state.exitButton:draw(menuPositionX, menuPositionY + 40, 35, 10)
+    elseif isRunning() then
+        print("Running")
+    end
+end
+```
+
+TODO: EXPLAIN HERE

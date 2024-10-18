@@ -74,7 +74,10 @@ end
 
 function love.draw()
     if isMenu() then
-        stateButtons.menu_state.startButton:draw(love.graphics.getWidth() / 2 - 65, love.graphics.getHeight() / 2 - 25, 35, 10)
+        local menuPositionX = love.graphics.getWidth() / 2 - 65
+        local menuPositionY = love.graphics.getHeight() / 2 - 25
+        stateButtons.menu_state.startButton:draw(menuPositionX, menuPositionY, 35, 10)
+        stateButtons.menu_state.exitButton:draw(menuPositionX, menuPositionY + 40, 35, 10)
     elseif isRunning() then
         print("Running")
     end
