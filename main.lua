@@ -13,7 +13,10 @@ local cursor = {
 local program = {
     state = {
         menu = true,
-        running = false
+        running = {
+            mapScenes = {},
+            utility = {}
+        }
     }
 }
 
@@ -43,8 +46,10 @@ local function isRunning()
 end
 
 function love.load()
-    -- Load buttons for the menu state
+-- Load buttons for the menu state
     stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
+-- Load 
+
 end
 
 -- Love2D core input function with button passed as parameter

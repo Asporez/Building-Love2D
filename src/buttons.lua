@@ -70,7 +70,7 @@ function buttons.createMenuButtons(enableRunning, enableMenu)
     local menuButtons = {}
 
     menuButtons.startButton = Button("Play", enableRunning, nil, 'sprites/smallGreenButton.png', 96, 36)
-    menuButtons.exitButton = Button("Exit", love.event.quit, nil, 'sprites/smallGreenButton.png', 96, 32)
+    menuButtons.exitButton = Button("Exit", love.event.quit, nil, 'sprites/smallGreenButton.png', 96, 36)
 
     return menuButtons
 end

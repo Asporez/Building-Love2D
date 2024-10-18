@@ -129,7 +129,13 @@ The other function draws the button on the screen.
 
 Let's load this button into our main flow, first we need to create a helper function that will define the switch between states by simply switching the bool
 
-- In main.lua above love.load but below the rest of the stored tables:
+- Whenever we create a module in it's own file, we import it into the main flow of the program through require:
+In main.lua 
+```lua
+local button = require('src/buttons')
+```
+
+above love.load but below the rest of the stored tables:
 ```lua
 -- Helper functions to switch between states
 local function enableMenu()
@@ -308,3 +314,48 @@ end
 ```
 
 TODO: EXPLAIN HERE
+
+- Create src/mapScene.lua metatable and store it in the "running" nested table. This... METATABLE RWAAARRR!! ...again is a neat Lua feature with a bunch of moving parts.
+```lua
+local love = require('love')
+
+local mapScenes = {}
+mapScenes.__index = mapScenes
+
+function mapScenes:new(name)
+    local newMapScene = {}
+    setmetatable(newMapScene, mapScenes)
+    newMapScene.name = name
+    newMapScene.entities = {}
+    return newMapScene
+end
+
+function mapScenes:load()
+    print(self.name.."loading")
+end
+
+function mapScenes:update(dt)
+    print(self.name.."updating")
+end
+
+function mapScenes:draw()
+    love.graphics.print("Scene:"..self.name, 10, 10)
+end
+```
+TODO: EXPLAIN METATABLES
+
+- Change the program state nested table in main.lua
+
+```lua
+-- Table to store program states
+local program = {
+    state = {
+        menu = true,
+        running = {
+            mapScenes = {}
+        }
+    }
+}
+```
+
+- 
