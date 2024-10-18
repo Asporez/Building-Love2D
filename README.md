@@ -12,18 +12,20 @@ or maybe it will be useful to somebody else some day.
 - Create Löve2D core loop in main.lua
 ```lua
 local love = require('love')
-
+--everything in and above the body of love.load() is loaded once when the program is launched
 function love.load()
 	-- body
 end
-
+-- after love.load() the program flow starts with the first love.update call
 function love.update(dt)
-	-- body
+	-- function input/output that needs update goes here. (dt) means delta-time or the amount of time since the last update (max60fps)
 end
-
+-- everything here is also part of update as well as above love.update, put functions that are not within their own file here for callbacks.
+-- in fact everything in the program flow could go here but I prefer not to.
 function love.draw()
-	-- body
+	-- this is where the artsy things happen
 end
+-- everything below love.draw() gets updated like the rest of the loop and then start the loop again from the end of love.load()
 ```
 
 - Create program states table:
