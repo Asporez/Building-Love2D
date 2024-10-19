@@ -1,4 +1,3 @@
--- src/mapScenes.lua
 local love = require('love')
 
 local mapScenes = {}
@@ -13,28 +12,25 @@ function mapScenes:new(name)
     return newMapScene
 end
 
-program.state.running.mapScenes.mapScene1 = mapScenes:new("Scene1")
-program.state.running.mapScenes.mapScene2 = mapScenes:new("Scene2")
-
-program.state.running.currentMapScene = program.state.running.mapScenes.Scene1
-
-local function switchScene(newMapScene)
-    if program.state.running.mapScenes[newMapScene] then
-        program.state.running.currentMapScene = program.state.running.mapScenes[newMapScene]
-        program.state.running.currentMapScene:load()
+-- Switch between scenes
+function mapScenes:switchScene(newMapSceneName, scenes)
+    if scenes[newMapSceneName] then
+        return scenes[newMapSceneName]
     else
-        print("Scene "..newMapScene.." not found")
+        print("Scene " .. newMapSceneName .. " not found")
     end
 end
 
 function mapScenes:load()
-    print(self.name.."loading")
+    print(self.name .. " loading")
 end
 
 function mapScenes:update(dt)
-    print(self.name.."updating")
+    print(self.name .. " updating")
 end
 
 function mapScenes:draw()
-    love.graphics.print("Scene:"..self.name, 10, 10)
+    love.graphics.print("Scene: " .. self.name, 10, 10)
 end
+
+return mapScenes

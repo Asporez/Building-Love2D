@@ -25,6 +25,7 @@ function Button(text, func, func_param, spritePath, width, height)
                 if (mouse_y + cursor_radius >= self.button_y) and (mouse_y - cursor_radius <= self.button_y + self.height) then
                     if self.func_param then
                         self.func(self.func_param)
+                        print("click")
                     else
                         self.func()
                     end

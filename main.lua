@@ -35,14 +35,23 @@ end
 
 local function enableRunning()
     program.state.menu = false
-    program.state.running = true
+
+    -- Initialize the running state as a table instead of a boolean
+    program.state.running = {
+        mapScenes = {},
+        currentMapScene = nil,
+        utility = {}
+    }
+
     -- Initialize map scenes when switching to the running state
     program.state.running.mapScenes.mapScene1 = mapScenes:new("Scene1")
     program.state.running.mapScenes.mapScene2 = mapScenes:new("Scene2")
+
     -- Set the current scene to Scene1 by default
     program.state.running.currentMapScene = program.state.running.mapScenes.mapScene1
     program.state.running.currentMapScene:load()
 end
+
 
 -- Helper functions to check for game state
 local function isMenu()
@@ -55,11 +64,10 @@ end
 
 -- Function to switch between map scenes
 local function switchScene(newMapScene)
-    if program.state.running.mapScenes[newMapScene] then
-        program.state.running.currentMapScene = program.state.running.mapScenes[newMapScene]
+    local currentMapScene = mapScenes:switchScene(newMapScene, program.state.running.mapScenes)
+    if currentMapScene then
+        program.state.running.currentMapScene = currentMapScene
         program.state.running.currentMapScene:load()
-    else
-        print("Scene " .. newMapScene .. " not found")
     end
 end
 
@@ -70,16 +78,17 @@ end
 
 -- Love2D core input function with button passed as parameter
 function love.mousepressed(x, y, mouse_button, istouch, presses)
-    if not isRunning() then
-        if mouse_button == 1 then
-            if isMenu() then
-                for _, btn in pairs(stateButtons.menu_state) do
-                    btn:checkPressed(x, y, cursor.radius)
-                end
+    if mouse_button == 1 then
+        if isMenu() then  -- Check if the program is in the menu state
+            -- Loop through each button and check if it was pressed
+            for _, btn in pairs(stateButtons.menu_state) do
+                -- Check if the button was clicked based on cursor position
+                btn:checkPressed(x, y, cursor.radius)
             end
         end
     end
 end
+
 
 function love.keypressed(key)
     if isRunning() then
