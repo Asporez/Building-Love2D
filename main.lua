@@ -1,5 +1,4 @@
 local love = require('love')
-
 local button = require('src.buttons')
 local mapScenes = require('src.mapScenes')  -- Load the mapScenes module
 

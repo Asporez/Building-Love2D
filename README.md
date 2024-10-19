@@ -352,10 +352,18 @@ local program = {
     state = {
         menu = true,
         running = {
-            mapScenes = {}
+            mapScenes = {},
+            currentMapScene = nil,  -- Store the currently active map scene
+            utility = {}
         }
     }
 }
 ```
+The game state is pretty important since it is kind of the gateway through which the modules interact...
+Now on to the refactoring hell of programming.
 
-- 
+- Move inputs and helper functions into src/inputHandlers.lua
+```lua
+
+```
+# TODO: Explain scope and functions calls across modules
