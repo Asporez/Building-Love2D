@@ -371,7 +371,7 @@ I am going to try to fork at point that I consider to be modular like now, the n
 
 ## Creating Entitites
 
-Now we are going to create a constructor function that stores a metatable in a table... yeah I know it's a lot of tables but this is Lua, land of tables and unicorns.
+Now we are going to create a factory pattern that stores a metatable in a table... yeah I know it's a lot of tables but this is Lua, land of tables and unicorns.
 THe purpose of this is that just like the button function, we don't have to program the entire function each time we want to create an entity, we can simply create inherited
 
 ```lua
@@ -393,10 +393,48 @@ function Entity:new( x, y, radius, color )
 end
 ```
 
-This function is Lua's way to interpret Object Oriented Programming, it create an object that behaves the same as a class with other programming languages, but really it's just a table. So we defined that entities are now a thing in this project, now let's create some entities!!
+This function is Lua's way to simulate Object Oriented Programming, it create an object that behaves the same as a class with other programming languages, but really it's just a table. So we declared that entities are now a thing in this project, now let's define how they should be drawn!
 
 ```lua
 function Entity.draw()
-    
+    love.graphics.setColor(self.color)
+    love.graphics.circle('fill', self.x, self.y, self.radius)
+    love.graphics.setColor(1, 1, 1)
 end
+```
+
+Now this is just a placeholder circle so that I can bask in the result later and also have a way to see if the code works or not. We still have to define individual entities, let's create a player entity and NPC entity with the only distinction being that the player is green and the NPC is red.
+Note how both functions return a table and a metatable... the metatable is what we defined earlier, without the first function in the factory pattern but we add "self" (self, x, y, 20, {}). Cogito ego sum, well programs don't think so they can only be themselves as defined by the programmer. Without the initial function in the factory patterns, parameters wouldn't mean anything... without the metatable to add to an Entity, it would simply be the default entity which we set as a white circle.
+
+#### You can put as many tables into tables as you want, you can put as many tables in those tables, and you can put as many tables in those tables as you want... although eventually you are going to have to face the law of thermodynamics and memory is also an issue.
+
+```lua
+-- set metatable and assing it to inherit the parameters of Entity table.
+local Player = setmetatable({}, {__index = Entity})
+function Player:new(x, y)
+    return Entity.new(self, x, y, 20, {0, 1, 0})
+end
+
+local NPC = setmetatable({}, {__index = Entity})
+function NPC:new(x, y)
+    return Entity.new(self, x, y, 20, {1, 0, 0})
+end
+```
+
+Finally, create the constructor function. How we set the position into the table by calling it entityType then checking through the types available.
+
+```lua
+-- Constructor function that creates the entities to be instantiated.
+function entityFactory.createEntity(entityType, x, y)
+    if entityType == 'Player' then
+        return Player:new(x, y)
+    elseif entityType == 'NPC' then
+        return NPC:new(x, y)
+    end
+end
+```
+
+- Load the module in main.lua:
+```lua
+
 ```
