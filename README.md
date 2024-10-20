@@ -8,6 +8,7 @@ or maybe it will be useful to somebody else some day.
 # ES23
 
 ## Preparing the project.
+[Template Fork](#template-fork)
 
 - Create Löve2D core loop in main.lua
 ```lua
@@ -360,10 +361,42 @@ local program = {
 }
 ```
 The game state is pretty important since it is kind of the gateway through which the modules interact...
-Now on to the refactoring hell of programming.
 
-- Move inputs and helper functions into src/inputHandlers.lua
+# **Template Fork**
+[back to index](#index)
+
+Well this was a few lines of simple code right!? At this point the program is a solid template to start building the user interface for any type of programs so I will will create a fork that can be used to start any other project. Although writing the initial stages of a code is fun I think leaving detailed notes on methods and the reason behind them is going to pay off in the future!!
+
+I am going to try to fork at point that I consider to be modular like now, the next steps might be the right one, might be a horrible series of mistakes... so I want to have the ability to perhaps built each modules in a different order... in any case I think it would be neat to have modular components on my repository that can be sort of patched up together.
+
+## Creating Entitites
+
+Now we are going to create a constructor function that stores a metatable in a table... yeah I know it's a lot of tables but this is Lua, land of tables and unicorns.
+THe purpose of this is that just like the button function, we don't have to program the entire function each time we want to create an entity, we can simply create inherited
+
 ```lua
+local entityFactory = {}
 
+local Entity = {}
+Entity.__index = Entity
+
+-- function to instantiate an entity
+function Entity:new( x, y, radius, color )
+    local newEntity = {
+        x = x or 0,
+        y = y or 0,
+        radius = radius or 10,
+        color = color {1, 1, 1}
+    }
+    setmetatable(newEntity, self)
+    return newEntity
+end
 ```
-# TODO: Explain scope and functions calls across modules
+
+This function is Lua's way to interpret Object Oriented Programming, it create an object that behaves the same as a class with other programming languages, but really it's just a table. So we defined that entities are now a thing in this project, now let's create some entities!!
+
+```lua
+function Entity.draw()
+    
+end
+```
