@@ -53,14 +53,13 @@ local function enableRunning()
     program.state.running.currentMapScene:load()
 end
 
-
 -- Helper functions to check for game state
 local function isMenu()
     return program.state.menu
 end
 
 local function isRunning()
-    return program.state.running
+    return program.state.running ~= false
 end
 
 -- Function to switch between map scenes
@@ -99,16 +98,15 @@ function love.mousepressed(x, y, mouse_button, istouch, presses)
     end
 end
 
-
 function love.keypressed(key)
     if isRunning() then
         if key == 'escape' then
             enableMenu()
--- Switch to Scene1
         elseif key == '1' then
+-- Switch to Scene1
             switchScene("mapScene1")
--- Switch to Scene2
         elseif key == '2' then
+-- Switch to Scene2
             switchScene("mapScene2")
         end
     end
