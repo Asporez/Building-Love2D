@@ -8,7 +8,7 @@ function Entity:new(x, y, radius, color)
         x = x or 0,
         y = y or 0,
         radius = radius or 10,
-        color = color or {1, 1, 1}
+        color = color or {0.2, 0.2, 0.2}
     }
     setmetatable(newEntity, self)
     return newEntity
@@ -17,7 +17,7 @@ end
 function Entity.draw()
     love.graphics.setColor(self.color)
     love.graphics.circle('fill', self.x, self.y, self.radius)
-    love.graphics.setColor(1, 1, 1)
+    --love.graphics.setColor(1, 1, 1)
 end
 -- set metatable and assing it to inherit the parameters of Entity table.
 local Player = setmetatable({}, {__index = Entity})

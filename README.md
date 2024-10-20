@@ -8,6 +8,7 @@ or maybe it will be useful to somebody else some day.
 # ES23
 
 ## Preparing the project.
+#### Index
 [Template Fork](#template-fork)
 
 - Create Löve2D core loop in main.lua
@@ -368,6 +369,10 @@ The game state is pretty important since it is kind of the gateway through which
 Well this was a few lines of simple code right!? At this point the program is a solid template to start building the user interface for any type of programs so I will will create a fork that can be used to start any other project. Although writing the initial stages of a code is fun I think leaving detailed notes on methods and the reason behind them is going to pay off in the future!!
 
 I am going to try to fork at point that I consider to be modular like now, the next steps might be the right one, might be a horrible series of mistakes... so I want to have the ability to perhaps built each modules in a different order... in any case I think it would be neat to have modular components on my repository that can be sort of patched up together.
+
+# Codemark
+WARNING, EVERYTHING BELOW DOESNT REALLY WORK YET AND MIGHT BE REFACTORED ENTIRELY, THIS IS WHERE I AM CURRENTLY WORKING.
+[back to index](#index)
 
 ## Creating Entitites
 
