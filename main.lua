@@ -1,7 +1,6 @@
 local love = require('love')
 local button = require('src.buttons')
-local mapScenes = require('src.mapScenes')
-local entityFactory = require('src.entityFactory')
+local mapScenes = require('src.mapScenes')  -- Load the mapScenes module
 
 -- Table to store mouse cursor shape
 local cursor = {
@@ -16,8 +15,7 @@ local program = {
         menu = true,
         running = {
             mapScenes = {},
--- Store the currently active map scene
-            currentMapScene = nil,
+            currentMapScene = nil,  -- Store the currently active map scene
             utility = {}
         }
     }
@@ -37,21 +35,22 @@ end
 local function enableRunning()
     program.state.menu = false
 
--- Initialize the running state as a table instead of a boolean
+    -- Initialize the running state as a table instead of a boolean
     program.state.running = {
         mapScenes = {},
         currentMapScene = nil,
         utility = {}
     }
 
--- Initialize map scenes when switching to the running state
+    -- Initialize map scenes when switching to the running state
     program.state.running.mapScenes.mapScene1 = mapScenes:new("Scene1")
     program.state.running.mapScenes.mapScene2 = mapScenes:new("Scene2")
 
--- Set the current scene to Scene1 by default
+    -- Set the current scene to Scene1 by default
     program.state.running.currentMapScene = program.state.running.mapScenes.mapScene1
     program.state.running.currentMapScene:load()
 end
+
 
 -- Helper functions to check for game state
 local function isMenu()
@@ -59,7 +58,7 @@ local function isMenu()
 end
 
 local function isRunning()
-    return program.state.running ~= false
+    return program.state.running
 end
 
 -- Function to switch between map scenes
@@ -71,42 +70,32 @@ local function switchScene(newMapScene)
     end
 end
 
--- Initialize entityFactory
-local player
-local npc
-
 function love.load()
--- Load buttons for the menu state
+    -- Load buttons for the menu state
     stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
-
--- Load individual entities
-    player = entityFactory.createEntity('player', 800, 600)
-    npc = entityFactory.createEntity('npc', 800, 100)
 end
 
 -- Love2D core input function with button passed as parameter
 function love.mousepressed(x, y, mouse_button, istouch, presses)
     if mouse_button == 1 then
--- Check if the program is in the menu state
-        if isMenu() then
--- Loop through each button and check if it was pressed
+        if isMenu() then  -- Check if the program is in the menu state
+            -- Loop through each button and check if it was pressed
             for _, btn in pairs(stateButtons.menu_state) do
--- Check if the button was clicked based on cursor position
+                -- Check if the button was clicked based on cursor position
                 btn:checkPressed(x, y, cursor.radius)
             end
         end
     end
 end
 
+
 function love.keypressed(key)
     if isRunning() then
         if key == 'escape' then
             enableMenu()
-        elseif key == '1' then
--- Switch to Scene1
+        elseif key == '1' then  -- Switch to Scene1
             switchScene("mapScene1")
-        elseif key == '2' then
--- Switch to Scene2
+        elseif key == '2' then  -- Switch to Scene2
             switchScene("mapScene2")
         end
     end
