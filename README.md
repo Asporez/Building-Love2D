@@ -426,9 +426,9 @@ Finally, create the constructor function. How we set the position into the table
 ```lua
 -- Constructor function that creates the entities to be instantiated.
 function entityFactory.createEntity(entityType, x, y)
-    if entityType == 'Player' then
+    if entityType == 'player' then
         return Player:new(x, y)
-    elseif entityType == 'NPC' then
+    elseif entityType == 'npc' then
         return NPC:new(x, y)
     end
 end
@@ -436,5 +436,22 @@ end
 
 - Load the module in main.lua:
 ```lua
+local entityFactory = require('src.entityFactory')
 
+(...)
+
+-- Initialize entityFactory
+local player
+local npc
+
+function love.load()
+-- Load buttons for the menu state
+    stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
+
+-- Load individual entities
+    player = entityFactory.createEntity('player', 800, 600)
+    npc = entityFactory.createEntity('npc', 800, 100)
+end
 ```
+
+TODO: Define drawing logic in mapScenes
