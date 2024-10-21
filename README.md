@@ -8,6 +8,8 @@ or maybe it will be useful to somebody else some day.
 # ES23
 
 ## Preparing the project.
+#### index
+[codemark](#codemark)
 
 - Create Löve2D core loop in main.lua
 ```lua
@@ -362,8 +364,6 @@ local program = {
 The game state is pretty important since it is kind of the gateway through which the modules interact...
 Now on to the refactoring hell of programming.
 
-- Move inputs and helper functions into src/inputHandlers.lua
-```lua
-
-```
-# TODO: Explain scope and functions calls across modules
+#### codemark
+*This is where I am working now*
+[back to index](#index)
