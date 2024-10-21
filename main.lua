@@ -1,6 +1,7 @@
 local love = require('love')
 local button = require('src.buttons')
 local mapScenes = require('src.mapScenes')  -- Load the mapScenes module
+local entityFactory = require('src.entityFactory')
 
 -- Table to store mouse cursor shape
 local cursor = {
@@ -43,11 +44,20 @@ local function enableRunning()
     }
 
     -- Initialize map scenes when switching to the running state
-    program.state.running.mapScenes.mapScene1 = mapScenes:new("Scene1")
-    program.state.running.mapScenes.mapScene2 = mapScenes:new("Scene2")
+    local mapScene1 = mapScenes:new("Scene1")
+    program.state.running.mapScenes.mapScene1 = mapScene1
+
+
+    local mapScene2 = mapScenes:new("Scene2")
+    program.state.running.mapScenes.mapScene2 = mapScene2
+
+    local player = entityFactory.createEntity('player', 100, 100)
+    local npc = entityFactory.createEntity('npc', 800, 100)
+    mapScene1:addEntity(player)
+    mapScene1:addEntity(npc)
 
     -- Set the current scene to Scene1 by default
-    program.state.running.currentMapScene = program.state.running.mapScenes.mapScene1
+    program.state.running.currentMapScene = mapScene1
     program.state.running.currentMapScene:load()
 end
 
@@ -67,12 +77,21 @@ local function switchScene(newMapScene)
     if currentMapScene then
         program.state.running.currentMapScene = currentMapScene
         program.state.running.currentMapScene:load()
+    else
+        print("scene switch failed")
     end
 end
 
 function love.load()
     -- Load buttons for the menu state
     stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
+
+    if program.state.running and program.state.running.currentMapScene then
+        local player = entityFactory.createEntity('player', 100, 100)
+        local npc = entityFactory.createEntity('npc', 800, 100)
+        program.state.running.currentMapScene:addEntity(player)
+        program.state.running.currentMapScene:addEntity(npc)
+    end
 end
 
 -- Love2D core input function with button passed as parameter

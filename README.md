@@ -9,7 +9,9 @@ or maybe it will be useful to somebody else some day.
 
 ## Preparing the project.
 #### index
-[codemark](#codemark)
+
+ - [Template Fork](#template-fork)
+ - 
 
 - Create Löve2D core loop in main.lua
 ```lua
@@ -364,6 +366,61 @@ local program = {
 The game state is pretty important since it is kind of the gateway through which the modules interact...
 Now on to the refactoring hell of programming.
 
-#### codemark
+#### template fork
 *This is where I am working now*
+*I am doing my best to understand the usage of metatables but I might end up just going along with the pattern used for buttons although the last time I did this ended up being a very procedural code while I was trying to learn OOP. Oh well, programming often is not as easy as it seems.*
 [back to index](#index)
+
+I will just leave the code I tried to make for handling entities here and break it down later. It is by all means the right way to set of a metatable factory pattern to simulate OOP but I'm struggling to use it correctly for now.
+
+```lua
+local love = require('love')
+-- src/entityFactory.lua
+local Entity = {}
+Entity.__index = Entity
+
+function Entity:new(x, y, radius, color)
+    local instance = {
+        x = x or 0,
+        y = y or 0,
+        radius = radius or 10,
+        color = color or {0.2, 0.2, 0.2}
+    }
+    setmetatable(instance, self)
+    return instance
+end
+
+function Entity:draw()
+    print(self.x, self.y, self.radius)
+    love.graphics.setColor(self.color)
+    love.graphics.circle('fill', self.x, self.y, self.radius)
+end
+
+-- Player and NPC classes inherit from Entity
+local Player = setmetatable({}, {__index = Entity})
+function Player:new(x, y)
+    local instance = Entity.new(self, x, y, 20, {0, 1, 0})
+    return instance
+end
+
+local NPC = setmetatable({}, {__index = Entity})
+function NPC:new(x, y)
+    local instance = Entity.new(self, x, y, 20, {1, 0, 0})
+    return instance
+end
+
+-- factory pattern table
+
+local entityFactory = {}
+function entityFactory.createEntity(entityType, x, y)
+    if entityType == 'player' then
+        return Player:new(x, y)
+    elseif entityType == 'npc' then
+        return NPC:new(x, y)
+    end
+end
+
+return entityFactory
+```
+
+The point of the attempt is to load this metatable to be a subclass of the mapScenes class, but really both are tables so it can get confusing, for me at least.
