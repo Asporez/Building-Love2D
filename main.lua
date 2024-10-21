@@ -1,6 +1,6 @@
 local love = require('love')
-local button = require('src.buttons')
-local mapScenes = require('src.mapScenes')  -- Load the mapScenes module
+local Button = require('src.Buttons')
+local MapScenes = require('src.MapScenes')  -- Load the MapScenes module
 
 -- Table to store mouse cursor shape
 local cursor = {
@@ -14,14 +14,14 @@ local program = {
     state = {
         menu = true,
         running = {
-            mapScenes = {},
+            MapScenes = {},
             currentMapScene = nil,  -- Store the currently active map scene
             utility = {}
         }
     }
 }
 
--- Table to store buttons depending on program state
+-- Table to store Buttons depending on program state
 local stateButtons = {
     menu_state = {}
 }
@@ -37,17 +37,17 @@ local function enableRunning()
 
     -- Initialize the running state as a table instead of a boolean
     program.state.running = {
-        mapScenes = {},
+        MapScenes = {},
         currentMapScene = nil,
         utility = {}
     }
 
     -- Initialize map scenes when switching to the running state
-    program.state.running.mapScenes.mapScene1 = mapScenes:new("Scene1")
-    program.state.running.mapScenes.mapScene2 = mapScenes:new("Scene2")
+    program.state.running.MapScenes.mapScene1 = MapScenes:new("Scene1")
+    program.state.running.MapScenes.mapScene2 = MapScenes:new("Scene2")
 
     -- Set the current scene to Scene1 by default
-    program.state.running.currentMapScene = program.state.running.mapScenes.mapScene1
+    program.state.running.currentMapScene = program.state.running.MapScenes.mapScene1
     program.state.running.currentMapScene:load()
 end
 
@@ -63,7 +63,7 @@ end
 
 -- Function to switch between map scenes
 local function switchScene(newMapScene)
-    local currentMapScene = mapScenes:switchScene(newMapScene, program.state.running.mapScenes)
+    local currentMapScene = MapScenes:switchScene(newMapScene, program.state.running.MapScenes)
     if currentMapScene then
         program.state.running.currentMapScene = currentMapScene
         program.state.running.currentMapScene:load()
@@ -71,17 +71,17 @@ local function switchScene(newMapScene)
 end
 
 function love.load()
-    -- Load buttons for the menu state
-    stateButtons.menu_state = button.createMenuButtons(enableRunning, enableMenu)
+    -- Load Buttons for the menu state
+    stateButtons.menu_state = Button.createMenuButtons(enableRunning, enableMenu)
 end
 
--- Love2D core input function with button passed as parameter
-function love.mousepressed(x, y, mouse_button, istouch, presses)
-    if mouse_button == 1 then
+-- Love2D core input function with Button passed as parameter
+function love.mousepressed(x, y, mouse_Button, istouch, presses)
+    if mouse_Button == 1 then
         if isMenu() then  -- Check if the program is in the menu state
-            -- Loop through each button and check if it was pressed
+            -- Loop through each Button and check if it was pressed
             for _, btn in pairs(stateButtons.menu_state) do
-                -- Check if the button was clicked based on cursor position
+                -- Check if the Button was clicked based on cursor position
                 btn:checkPressed(x, y, cursor.radius)
             end
         end
