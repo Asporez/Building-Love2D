@@ -1,9 +1,9 @@
 local love = require('love')
 
 -- Button factory
-function Button(text, func, func_param, spritePath, width, height)
+function newButton(text, func, func_param, spritePath, width, height)
     local buttonImage = love.graphics.newImage(spritePath)
-    
+
     -- Use provided width and height if available, otherwise fall back to image dimensions
     width = width or buttonImage:getWidth()
     height = height or buttonImage:getHeight()
@@ -29,7 +29,7 @@ function Button(text, func, func_param, spritePath, width, height)
                     else
                         self.func()
                     end
-                end    
+                end
             end
         end,
 
@@ -64,16 +64,16 @@ function Button(text, func, func_param, spritePath, width, height)
 end
 
 -- Table to hold button creation functions
-local buttons = {}
+local Buttons = {}
 
--- Function to create menu buttons
-function buttons.createMenuButtons(enableRunning, enableMenu)
+-- Function to create menu Buttons
+function Buttons.createMenuButtons(enableRunning, enableMenu)
     local menuButtons = {}
 
-    menuButtons.startButton = Button("Play", enableRunning, nil, 'sprites/smallGreenButton.png', 96, 36)
-    menuButtons.exitButton = Button("Exit", love.event.quit, nil, 'sprites/smallGreenButton.png', 96, 36)
+    menuButtons.startButton = newButton("Play", enableRunning, nil, 'sprites/smallGreenButton.png', 96, 36)
+    menuButtons.exitButton = newButton("Exit", love.event.quit, nil, 'sprites/smallGreenButton.png', 96, 36)
 
     return menuButtons
 end
 
-return buttons
+return Buttons

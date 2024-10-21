@@ -1,18 +1,18 @@
 local love = require('love')
 
-local mapScenes = {}
-mapScenes.__index = mapScenes
+local MapScenes = {}
+MapScenes.__index = MapScenes
 
 -- Constructor function to create new scenes.
-function mapScenes:new(name)
+function MapScenes:new(name)
     local newMapScene = {}
-    setmetatable(newMapScene, mapScenes)
+    setmetatable(newMapScene, MapScenes)
     newMapScene.name = name
     return newMapScene
 end
 
 -- Switch between scenes
-function mapScenes:switchScene(newMapSceneName, scenes)
+function MapScenes:switchScene(newMapSceneName, scenes)
     if scenes[newMapSceneName] then
         return scenes[newMapSceneName]
     else
@@ -20,16 +20,16 @@ function mapScenes:switchScene(newMapSceneName, scenes)
     end
 end
 
-function mapScenes:load()
+function MapScenes:load()
     print(self.name .. " loading")
 end
 
-function mapScenes:update(dt)
+function MapScenes:update(dt)
     print(self.name .. " updating")
 end
 
-function mapScenes:draw()
+function MapScenes:draw()
     love.graphics.print("Scene: " .. self.name, 10, 10)
 end
 
-return mapScenes
+return MapScenes
