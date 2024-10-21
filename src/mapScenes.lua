@@ -8,7 +8,6 @@ function mapScenes:new(name)
     local newMapScene = {}
     setmetatable(newMapScene, mapScenes)
     newMapScene.name = name
-    newMapScene.entities = {}
     return newMapScene
 end
 
